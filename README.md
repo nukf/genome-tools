@@ -10,12 +10,10 @@ assemblies (e.g. Vertebrate Genomes Project data).
 
 | Program | What it does |
 |---|---|
-| `hello_dna` | First program: counts G+C in a fixed DNA string |
 | `fasta_gc` | Reads a FASTA file; reports length, base composition (A/C/G/T/N/other), GC content and GC skew |
 
 ## Build
 
-    g++ -std=c++17 -Wall -Wextra -O2 -o bin/hello_dna src/hello_dna.cpp
     g++ -std=c++17 -Wall -Wextra -O2 -o bin/fasta_gc src/fasta_gc.cpp
 
 ## Usage
