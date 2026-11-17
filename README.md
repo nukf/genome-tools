@@ -11,14 +11,16 @@ assemblies (e.g. Vertebrate Genomes Project data).
 | Program | What it does |
 |---|---|
 | `fasta_gc` | Reads a FASTA file; reports length, base composition (A/C/G/T/N/other), GC content and GC skew |
+| `assembly_stats` | Genome assembly statistics: number of sequences, total length, N50/L50, gaps (runs of N), soft-masked (repeat) fraction, GC content, and a table of the largest sequences |
 
 ## Build
 
     g++ -std=c++17 -Wall -Wextra -O2 -o bin/fasta_gc src/fasta_gc.cpp
-
+    g++ -std=c++17 -Wall -Wextra -O2 -o bin/assembly_stats src/assembly_stats.cpp
 ## Usage
 
     ./bin/fasta_gc <file.fasta>
+    ./bin/assembly_stats <assembly.fna> [number_of_sequences_to_list]
 
 Example:
 
@@ -32,10 +34,37 @@ Genome data is not stored in this repository. Download scripts are in `scripts/`
 | Data | Source | Script |
 |---|---|---|
 | Atlantic cod (*Gadus morhua*) mitochondrial genome | NCBI NC_002081.1 | `scripts/download_cod_mito.sh` |
+| Atlantic cod (*Gadus morhua*) reference genome, gadMor3.0 | NCBI GCF_902167405.1 | `scripts/download_cod_genome.sh` |
+
+The genome download was verified with the MD5 checksum supplied by NCBI.
 
 ## Results
 
-Atlantic cod mitochondrial genome (NC_002081.1):
+### Atlantic cod reference genome (gadMor3.0)
+
+`assembly_stats` reproduces the published assembly statistics:
+
+| Measure | assembly_stats | Published |
+|---|---|---|
+| Sequences | 227 | 226 scaffolds + mitochondrial genome |
+| Total length | 669,966,409 bp | 669,949,713 bp (Ensembl) + 16,696 bp mitogenome |
+| N50 | 28,732,775 bp | 28,732,775 bp (Ensembl scaffold N50) |
+| L50 | 11 | |
+| Chromosomes | 23 largest sequences = 23 chromosomes (21.7–43.8 Mb) | 23 chromosomes |
+| Gaps (runs of N) | 1,216 | ~1,215 (1,441 contigs in 226 scaffolds) |
+| N bases | 3.52% | |
+| Soft-masked (repeats) | 31.74% | |
+| GC content | 45.64% | |
+
+Run time: about 5 s on a laptop (Apple M-series) for the full 670 Mb assembly.
+
+Unplaced scaffolds are much more repeat-rich (often 50–80% soft-masked)
+than the chromosomes (28–35%), consistent with repeats being the main
+obstacle to placing sequences during assembly.
+
+Full output: [docs/cod_gadMor3_assembly_stats.txt](docs/cod_gadMor3_assembly_stats.txt)
+
+### Atlantic cod mitochondrial genome (NC_002081.1):
 
 | Measure | Value | Checked against |
 |---|---|---|
