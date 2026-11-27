@@ -1,0 +1,6 @@
+species	assembly	sequences	total_length_bp	n50_bp	l50	gaps	masked_percent	gc_percent	cpg_obs_exp	gpc_obs_exp
+Gadus morhua	gadMor3.0	227	669966409	28732775	11	1216	31.74	45.64	0.592	0.904
+Danio rerio	GRCz13ab	26	1455327166	59431669	11	0	51.77	37.16	0.501	1.157
+Taeniopygia guttata	bTaeGut7.mat	41	1141148522	72089520	6	9	22.41	42.68	0.227	1.077
+Chelonia mydas	rCheMyd1.pri.v2	93	2134375114	134428053	5	298	31.36	44.01	0.261	1.009
+Homo sapiens	GRCh38.p14	705	3298430636	145138636	9	1169	36.12	41.05	0.243	1.015

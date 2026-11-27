@@ -12,6 +12,10 @@ This repository documents my work on building genome analysis tools, towards who
 | `src/assembly_stats.py` | Genome assembly statistics: number of sequences, total length, N50/L50, gaps (runs of N), soft-masked (repeat) fraction, GC content, and a table of the largest sequences |
 | `src/cpg_stats.py` | CpG depletion: observed/expected CpG for each sequence and the whole assembly, with GpC as a control |
 | `src/fasta_utils.py` | Shared FASTA reader used by the tools |
+| `src/summarize_results.py` | Combines per-species results into one comparison table (`docs/species_summary.tsv`) |
+| `scripts/download_genomes.sh` | Downloads every genome listed in `data/species.txt`; safe to re-run to retry failed downloads |
+| `scripts/check_md5.sh` | Verifies a downloaded genome against NCBI's md5 checksums |
+| `scripts/run_all.sh` | Runs the analysis tools on every genome |
 
 ## Requirements
 
@@ -28,6 +32,13 @@ Example:
     bash scripts/download_cod_mito.sh
     python3 src/fasta_gc.py data/raw/cod_mito.fasta
 
+Full multi-species workflow:
+
+    bash scripts/download_genomes.sh
+    bash scripts/check_md5.sh data/raw/<short_name>
+    bash scripts/run_all.sh
+    python3 src/summarize_results.py
+
 ## Data
 Genome data is not stored in this repository. Download scripts are in `scripts/`:
 
@@ -35,6 +46,7 @@ Genome data is not stored in this repository. Download scripts are in `scripts/`
 |---|---|---|
 | Atlantic cod (*Gadus morhua*) mitochondrial genome | NCBI NC_002081.1 |`scripts/download_cod_mito.sh` |
 | Atlantic cod reference genome assembly (gadMor3.0) | NCBI GCF_902167405.1 | `scripts/download_cod_genome.sh` |
+| Five vertebrate reference genomes (list in `data/species.txt`) | NCBI | `scripts/download_genomes.sh` |
 
 ## Results
 
@@ -84,9 +96,35 @@ methylated cytosines mutating to thymine in the germline. The value is
 typical of fish genomes (about 0.5) and much higher than in mammals
 (about 0.2), consistent with lower CpG depletion in fish.
 
+### Comparison across five vertebrates
+
+Five reference genome assemblies (`data/species.txt`), downloaded with
+`scripts/download_genomes.sh`, verified with `scripts/check_md5.sh`,
+analysed with `scripts/run_all.sh` and combined with
+`src/summarize_results.py` (full table: `docs/species_summary.tsv`).
+
+| Species | Group | Assembly | Sequences | Size (Gb) | N50 (Mb) | Gaps | Repeats (%) | GC (%) | CpG o/e | GpC o/e |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Atlantic cod (*Gadus morhua*) | fish | gadMor3.0 | 227 | 0.67 | 28.7 | 1,216 | 31.7 | 45.6 | 0.592 | 0.904 |
+| Zebrafish (*Danio rerio*) | fish | GRCz13ab | 26 | 1.46 | 59.4 | 0 | 51.8 | 37.2 | 0.501 | 1.157 |
+| Zebra finch (*Taeniopygia guttata*) | bird | bTaeGut7.mat | 41 | 1.14 | 72.1 | 9 | 22.4 | 42.7 | 0.227 | 1.077 |
+| Green sea turtle (*Chelonia mydas*) | reptile | rCheMyd1.pri.v2 | 93 | 2.13 | 134.4 | 298 | 31.4 | 44.0 | 0.261 | 1.009 |
+| Human (*Homo sapiens*) | mammal | GRCh38.p14 | 705 | 3.30 | 145.1 | 1,169 | 36.1 | 41.1 | 0.243 | 1.015 |
+
+CpG observed/expected agrees with published values for human (about 0.2)
+and zebrafish (about 0.5). CpG depletion is clearly weaker in the two fish
+(0.50–0.59) than in the bird, reptile and mammal (0.23–0.26), while the
+GpC control stays close to 1 in all species.
+
+Notes: totals include all sequences in each NCBI package, i.e. the
+mitochondrial genome where present and, for human, alternative loci and
+patch scaffolds (hence 705 sequences and 3.30 Gb rather than the 3.10 Gb
+primary assembly).
+
 ## Project structure
     src/ Python source code
-    scripts/ data download scripts
-    docs/ saved results
-    data/raw/ downloaded genomes (not tracked by git)
-    results/ program outputs (not tracked by git)
+    scripts/    data download scripts
+    docs/       saved results
+    data/raw/   downloaded genomes (not tracked by git)
+    results/    program outputs (not tracked by git)
+    data/       species list (data/species.txt)

@@ -1,0 +1,6 @@
+short_name accession assembly_name species
+cod_gadMor3 GCF_902167405.1 gadMor3.0 Gadus morhua
+zebrafish_GRCz13ab GCF_052040795.2 GRCz13ab Danio rerio
+zebrafinch_bTaeGut7 GCF_048771995.1 bTaeGut7.mat Taeniopygia guttata
+turtle_rCheMyd1 GCF_015237465.2 rCheMyd1.pri.v2 Chelonia mydas
+human_GRCh38 GCF_000001405.40 GRCh38.p14 Homo sapiens
