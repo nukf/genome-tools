@@ -10,6 +10,8 @@ This repository documents my work on building genome analysis tools, towards who
 |---|---|
 | `src/fasta_gc.py` | Reads a FASTA file; reports length, base composition (A/C/G/T/N/other), GC content and GC skew |
 | `src/assembly_stats.py` | Genome assembly statistics: number of sequences, total length, N50/L50, gaps (runs of N), soft-masked (repeat) fraction, GC content, and a table of the largest sequences |
+| `src/cpg_stats.py` | CpG depletion: observed/expected CpG for each sequence and the whole assembly, with GpC as a control |
+| `src/fasta_utils.py` | Shared FASTA reader used by the tools |
 
 ## Requirements
 
@@ -19,6 +21,7 @@ Python 3
  
     python3 src/fasta_gc.py <file.fasta>
     python3 src/assembly_stats.py <assembly.fasta> [number_to_list]
+    python3 src/cpg_stats.py <assembly.fasta> [number_to_list]
 
 Example:
 
@@ -64,6 +67,22 @@ full output in `docs/cod_gadMor3_assembly_stats.txt`:
 | Soft-masked (repeat) fraction | 31.74% | |
 | GC content | 45.64% | |
 | Run time | 14 s (Python 3, MacBook Air) | |
+
+
+CpG depletion in gadMor3.0, full output in `docs/cod_gadMor3_cpg_stats.txt`:
+
+| Measure | Value |
+|---|---|
+| CpG observed/expected | 0.592 |
+| GpC observed/expected (control) | 0.904 |
+| Range across the 23 chromosomes (CpG o/e) | 0.56–0.62 |
+
+CpG dinucleotides occur at about 59% of the frequency expected from base
+composition, while the reverse dinucleotide GpC is close to expectation.
+This CpG-specific depletion is the expected long-term footprint of
+methylated cytosines mutating to thymine in the germline. The value is
+typical of fish genomes (about 0.5) and much higher than in mammals
+(about 0.2), consistent with lower CpG depletion in fish.
 
 ## Project structure
     src/ Python source code
